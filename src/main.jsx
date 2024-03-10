@@ -6,22 +6,26 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import './index.css'
-import Home from './page/Home.jsx';
+import Login from './page/Login.jsx';
+import Footer from './component/Footer.jsx';
+import Nav from './component/Nav.jsx';
 
 
 const router = createBrowserRouter([
   {
-    path: "/",
-    element:<Home />
+    path:"/",
+    element:<App />
   },
   {
-    path:"/app",
-    element:<App />
-  }
+    path: "/login",
+    element:<Login />
+  },
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
+    <Nav />
     <RouterProvider router={router} />
+    <Footer />
   </React.StrictMode>,
 )
