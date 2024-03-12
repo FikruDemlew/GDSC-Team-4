@@ -1,10 +1,17 @@
-
+import Nav from "./component/Nav"
+import { Routes,Route } from 'react-router-dom'
+import Home from "./page/Home"
+import Login from "./page/Login"
 function App() {
   return (
     <>
-     <div className="flex flex-col justify-center items-center min-w-full min-h-screen gap-10">
-      <h1 className="text-center text-6xl">Welcome to Our Movie Recommendation<br></br> site.</h1>
-      <p className="text-center">Browse through the list moves</p>
+     <div className="bg-[#EBECEF]">
+      <Nav />
+      <Routes>
+        <Route path='/' element={<Home/>} />
+        <Route path='/login' element={<Login/>} />
+        
+      </Routes>
      </div>
     </>
   )
