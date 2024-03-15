@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { AiOutlineUser } from 'react-icons/ai';
 
 const Nav = () => {
   return (
@@ -11,7 +12,7 @@ const Nav = () => {
         <Link to='/' className='hover:text-gray-400 mr-7' >Home</Link>
         <Link to='/favourite' className= 'hover:text-gray-400 mr-7'>Favourite</Link>
         <Link to='/aboutus' className='hover:text-gray-400 mr-7' >About Us </Link>
-        <Link to='/login' className= 'hover:text-gray-400 mr-7'>Login</Link>
+        <Link to='/login' className= 'hover:text-gray-400 mr-7 inline-block '><AiOutlineUser/></Link>
       </div>
     </div>
   )
