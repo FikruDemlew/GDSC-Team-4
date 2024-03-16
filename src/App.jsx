@@ -4,6 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css"
 import Home from "./page/Home"
 import Login from "./page/Login"
 import Signup from "./page/Signup"
+import { MoviesDetails } from "./page/MoviesDetails"
 import { AuthProvider } from "./context/authContext"
 function App() {
   return (
@@ -15,6 +16,8 @@ function App() {
         <Route path='/' element={<Home/>} />
         <Route path='/login' element={<Login/>} />
         <Route path='/signup' element={<Signup/>} />
+        <Route path='/movies/:id' element={<MoviesDetails/>} />
+
         
       </Routes>
         </AuthProvider> 
