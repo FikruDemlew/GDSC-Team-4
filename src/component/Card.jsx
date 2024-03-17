@@ -44,13 +44,15 @@ const Card = ({ movie, favoriteMovies }) => {
     }
   };
 
-  const idExists = favoriteMovies.some((favorite) => favorite.id === movie.id);
+  let idExists = favoriteMovies
+    ? favoriteMovies.some((favorite) => favorite.id === movie.id)
+    : null;
 
   const addToFavorites = async (userId, movie) => {
     try {
       const userRef = doc(db, "users", userId);
       const favoritesRef = collection(userRef, "favorites");
-      await addDoc(favoritesRef, movie);
+      const id = await addDoc(favoritesRef, movie);
 
       setIsFavorite(true);
     } catch (error) {
@@ -64,7 +66,8 @@ const Card = ({ movie, favoriteMovies }) => {
 
     try {
       await deleteDoc(favoriteRef);
-      setIsFavorite((prev) => !prev);
+      setIsFavorite(false);
+      idExists = null;
     } catch (error) {
       console.error("Error removing favorite: ", error);
     }
@@ -85,7 +88,7 @@ const Card = ({ movie, favoriteMovies }) => {
               className="absolute top-4 right-4 h-10 w-10 rounded-full bg-white flex justify-center items-center cursor-pointer z-50"
               onClick={(event) => handleFavorite(event, id)}
             >
-              {idExists && isFavorite ? (
+              {idExists || isFavorite ? (
                 <Heart fill="red" className="text-white" />
               ) : (
                 <Heart fill="white" className="text-red-500" />
