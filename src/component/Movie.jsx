@@ -9,6 +9,8 @@ const Movie = () => {
   const [popular, setPopular] = useState([]);
   const [topRated, setTopRated] = useState([]);
   const [loading, setLoading]  =  useState(true);
+  const [problem,setproblem]=useState(false);
+  const [errorMessage,setErrorMessage]=useState('')
   const api_key = "api_key=73b58a9360afb9413bd12ff78914ed79";
   const all_movie_api_reference =
     "https://api.themoviedb.org/3/discover/movie?include_adult=true&include_video=true&language=en&page=1&" +
@@ -28,20 +30,28 @@ const Movie = () => {
       .then((data) => { 
         setAllMovies(data.results)
 
-     })
+     }). catch((err) =>
+         console.log(err)
+         );
+
     fetch(popular_api_reference)
       .then((res) => res.json())
       .then((data) => {
         setPopular(data.results)
-      })
+      }). catch((err) =>
+         console.log(err)
+         );
       
     fetch(top_Rated_api_reference)
       .then((res) => res.json())
       .then((data) => {
-        setTopRated(data.results)
+        setTopRated(data.results);
       })
+      .catch((err) => {
+     
+       setError(true)});
    setLoading(false)
- },3000)
+ },)
   }, [])
   } catch (error) {
      
@@ -58,25 +68,28 @@ const Movie = () => {
           </a>
         </div>
         {loading ? (
-          <Loding/>
+          <Loding />
         ) : (
           <div>
             <div className="  mx-20">
               <div className=" flex gap-3 p-5">
-                <p className="text-3xl mt-10 font-sans font-light">{movie}</p>
+                <p className="text-3xl mt-10 mb-7 font-sans font-light">{movie}</p>
               </div>
               <div
                 className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-7
         max-w-screen-2xl mx-auto"
               >
-                {allMovies.map((movieResult) => (
-                  <Card key={movieResult.id} movie={movieResult} />
-                ))}
+                {allMovies.map(
+                  (movieResult) =>
+                    movieResult.poster_path && (
+                      <Card key={movieResult.id} movie={movieResult} />
+                    )
+                )}
               </div>
             </div>
             <div className=" mx-20">
-              <div className=" flex gap-3 p-5  mt-20 ">
-                <p className="text-3xl font-sans  font-light" id="popular">
+              <div className=" flex gap-3 p-5  mt-20 mb-7">
+                <p className="  text-3xl font-sans  font-light" id="popular">
                   {trend}
                 </p>
               </div>
@@ -84,23 +97,31 @@ const Movie = () => {
                 className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-7
          max-w-screen-2xl mx-auto"
               >
-                {popular.map((movieResult) => (
-                  <Card key={movieResult.id} movie={movieResult} />
-                ))}
+                {popular.map(
+                  (movieResult) =>
+                    movieResult.poster_path && (
+                      <Card key={movieResult.id} movie={movieResult} />
+                    )
+                )}
               </div>
             </div>
-            <div className="   mx-20 ">
-              <div className="flex ml-auto p-5  mt-20" id="toprated">
+            <div className="    mx-20 ">
+              <div className="flex ml-auto p-5  mt-20 mb-7" id="toprated">
                 <p className="  text-3xl  font-sans font-light">{top}</p>
               </div>
-              <div
-                className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-7
-          max-w-screen-2xl mx-auto "
-              >
-                {topRated.map((movieResult) => (
-                  <Card key={movieResult.id} movie={movieResult} />
-                ))}
-              </div>
+              {
+               <div
+                  className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-7
+          max-w-screen-2xl mx-auto"
+                >
+                  {topRated.map(
+                    (movieResult) =>
+                      movieResult.poster_path && (
+                        <Card key={movieResult.id} movie={movieResult} />
+                      )
+                  )}
+                </div>
+              }
             </div>
           </div>
         )}

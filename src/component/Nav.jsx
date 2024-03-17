@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import Genere from "./Genere";
 
 const Nav = () => {
  
@@ -11,11 +12,12 @@ const Nav = () => {
           <Link to="/" className="hover:text-gray-400 mr-7">
             Home
           </Link>
+          {/* <div  className="hover:text-gray-400 mr-7" ><Genere/></div> */}
           <Link to="/favourite" className="hover:text-gray-400 mr-7">
             Favourite
           </Link>
           <Link to="/aboutus" className="hover:text-gray-400 mr-7">
-            About Us{" "}
+            About Us
           </Link>
           <Link to="/login" className="hover:text-gray-400 mr-7">
             Login

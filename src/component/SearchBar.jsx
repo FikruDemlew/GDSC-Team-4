@@ -17,7 +17,7 @@ function SearchBar() {
     <div className=" flex justify-center items-center mx-44">
       <form className="flex justify-center ite" onSubmit={handleSubmit}>
         <input
-          className=" font-sans text-xl capitalize flex  flex-grow h-10 outline-none  mr-2 pl-3  rounded-2xl  "
+          className=" shadow-xl font-sans text-xl capitalize flex  flex-grow h-10 outline-none  mr-2 pl-3  rounded-2xl  "
           type="text"
           placeholder="Search..."
           value={searchQuery}
