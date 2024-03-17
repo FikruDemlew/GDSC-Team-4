@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { Heart} from "lucide-react";
+import { Heart } from "lucide-react";
 import { useState } from "react";
 import { getAuth } from "firebase/auth";
 import { useAuth } from "../context/authContext";
@@ -23,55 +23,20 @@ const addToFavorites = async (userId, movie) => {
     console.error("Error adding favorite: ", error);
   }
 };
-const deleteFavorite = async (userId, movieId) => {
-    const userRef = doc(db, "users", userId);
-    const favoriteRef = doc(userRef, "favorites", movieId);
-   
-    try {
-       await deleteDoc(favoriteRef);
-       console.log("Favorite successfully deleted!");
-    } catch (error) {
-       console.error("Error removing favorite: ", error);
-    }
-   
-}
 
 const Card = ({ movie }) => {
-  const [isFavorite, setIsFavorite] = useState(false);
-  const banner = `https://image.tmdb.org/t/p/w500${movie.backdrop_path}`;
-  const image_url = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
-  const title = movie.original_title;
-  const year = movie.release_date.toString().substring(0, 4);
+  console.log("🚀 ~ Card ~ movie:", movie);
+  const image_url = movie.image;
+  const title = movie.title;
+  const year = movie.releaseYear.toString().substring(0, 4);
   const id = movie.id;
-  const rating = movie.vote_average.toFixed(1);
-  const userId = getAuth()?.currentUser?.uid;
+  const rating = parseInt(movie.rating).toFixed(1);
   const navigate = useNavigate();
-  const { userLoggedIn } = useAuth();
 
   const handleClick = (id) => {
     navigate(`/movies/${id}`);
   };
-  const handleFavorite = (event, id) => {
-    event.stopPropagation();
-    if (!userLoggedIn) navigate("/login");
-    else {
-      if (isFavorite){
-    
-      }
-      else {
-        addToFavorites(userId, {
-          id: id,
-          image: image_url,
-          title: title,
-          releaseYear: year,
-          rating: rating,
-          banner: banner,
-        });
-      }
-      setIsFavorite((prev) => !prev);
-      
-    }
-  };
+
   return (
     <div>
       <div
@@ -81,15 +46,6 @@ const Card = ({ movie }) => {
         <div className=" w-60 ">
           <div className="relative">
             <img className="rounded-t-lg" src={image_url} alt="" />
-            <div
-              className="absolute top-4 right-4 h-10 w-10 rounded-full bg-white flex justify-center items-center cursor-pointer z-50"
-              onClick={(event) => handleFavorite(event, id)}
-            >
-              <Heart
-                fill={isFavorite ? "red" : "white"}
-                className={isFavorite ? `text-white` : `text-red-500`}
-              />
-            </div>
           </div>
 
           <div className="w-60 flex justify-between items-center rounded-b text-black bg-white  py-2">
