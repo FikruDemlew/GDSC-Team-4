@@ -15,7 +15,7 @@ const Nav = () => {
           <div className="text-white mr-44 gap-7 flex justify-center items-center">
             <Link to="/">Home</Link>
             <Link to="/favorite">Favourite</Link>
-            <Link to="/aboutus">About Us </Link>
+            <Link to="/about">About Us </Link>
 
             <img
               src={getAuth()?.currentUser?.photoURL}
@@ -42,7 +42,7 @@ const Nav = () => {
               Home
             </Link>
            
-            <Link to="/aboutus" className="hover:text-gray-400 mr-7">
+            <Link to="/about" className="hover:text-gray-400 mr-7">
               About Us{" "}
             </Link>
             <div className="inline-flex">

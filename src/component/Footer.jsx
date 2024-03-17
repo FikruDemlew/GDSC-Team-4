@@ -1,4 +1,5 @@
 import { Popcorn } from "lucide-react";
+import { Link } from "react-router-dom";
 export const Footer = ()=> {
   return (
    <footer>
@@ -11,17 +12,13 @@ export const Footer = ()=> {
             </a>
             <ul className="flex flex-wrap items-center mb-6 text-sm font-medium text-white sm:mb-0 dark:text-gray-400">
                 <li>
-                    <a href="#" className="hover:underline me-4 md:me-6 text-white">About</a>
+                    <Link to="/" className="hover:underline me-4 md:me-6 text-white">Home</Link>
                 </li>
+               
                 <li>
-                    <a href="#" className="hover:underline me-4 md:me-6 text-white" >Privacy Policy</a>
+                <Link to="/about" className="hover:underline me-4 md:me-6 text-white">About us</Link>
                 </li>
-                <li>
-                    <a href="#" className="hover:underline me-4 md:me-6 text-white">Licensing</a>
-                </li>
-                <li>
-                    <a href="#" className="hover:underline text-white">Contact</a>
-                </li>
+               
             </ul>
         </div>
         <hr className="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
