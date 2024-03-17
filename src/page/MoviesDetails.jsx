@@ -1,49 +1,87 @@
-import React, {useState, useEffect}from 'react'
-import { useParams } from 'react-router-dom'
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 
-export const MoviesDetails = ({ movie }) => {
-  const api_key = "500f8710dfe90e56d66d96eb867fab60";
-      const [detailMovie, setDetailMovie] = useState({})
-      const params = useParams();
-      const id = params.id
-      const detail_api_reference =`https://api.themoviedb.org/3/movie/851925?api_key=500f8710dfe90e56d66d96eb867fab60`
+export const MoviesDetails = () => {
+  const [movieDetails, setMovieDetails] = useState({
+    title: "",
+    rating: 0,
+    desc: "",
+    image: "",
+    releaseDate: "",
+    backdropPath: "",
+    status: "",
+  });
+  const { id } = useParams();
 
-    
-      useEffect(() => {
-        fetch(detail_api_reference)
-          .then((res) => res.json())
-          .then((data) => {
-            setDetailMovie(data.results);
-          }) 
-          console.log(id);
-      }, []);
-      
-      return (
+  const detail_api_reference = `https://api.themoviedb.org/3/movie/${id}?api_key=${
+    import.meta.env.VITE_TMDB_API_KEY
+  }`;
+
+  useEffect(() => {
+    fetch(detail_api_reference)
+      .then((res) => res.json())
+      .then((data) => {
+        setMovieDetails((prev) => ({
+          ...prev,
+          title: data.title,
+          rating: data.vote_average.toFixed(1),
+          desc: data.overview,
+          image: `https://image.tmdb.org/t/p/w500${data.poster_path}`,
+          releaseDate: data.release_date,
+          backdropPath: `https://image.tmdb.org/t/p/w500${data.backdrop_path}`,
+          status: data.status,
+        }));
+      });
+    console.log(id);
+  }, []);
+  console.log("🚀 ~ MoviesDetails ~ movieDetails:", movieDetails);
+
+  return (
     <div>
-        <div className="flex flex-col justify-center sm:py-12">
-  
-  <div className="py-3 sm:max-w-xl sm:mx-auto">
-    <div className="bg-white shadow-lg border-gray-100 max-h-80	 border sm:rounded-3xl p-8 flex space-x-8">
-      <div className="h-48 overflow-visible w-1/2">
-          <img className="rounded-3xl shadow-lg" src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/1LRLLWGvs5sZdTzuMqLEahb88Pc.jpg" alt=""/>
-      </div>
-      <div className="flex flex-col w-1/2 space-y-4">
-        <div className="flex justify-between items-start">
-          <h2 className="text-3xl font-bold">hi</h2>
-          <div className="bg-yellow-400 font-bold rounded-xl p-2">7.2</div>
-        </div>
-        <div>
-          <div className="text-sm text-gray-400">Series</div>
-          <div className="text-lg text-gray-800">2019</div>
-        </div>
-          <p className=" text-gray-400 max-h-40 overflow-y-hidden">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-        <div className="flex text-2xl font-bold text-a">$83.90</div>
-      </div>
+      <div className="flex flex-col justify-center items-center sm:py-12  min-h-screen">
+        <div className="py-3  w-[70%]">
+          <div className="bg-white shadow-lg border-gray-100 border sm:rounded-3xl p-8 flex justify-center items-center space-x-8 ">
+            <div className="w-full mx-auto">
+              <img
+                className="rounded-3xl shadow-lg w-2/3 mx-auto"
+                src={movieDetails.image}
+                alt=""
+              />
+            </div>
 
+            <div className="flex flex-col w-full space-y-4">
+              <div className="flex justify-between items-start">
+                <h2 className="text-3xl font-bold">{movieDetails.title}</h2>
+                <div className="bg-yellow-400 font-bold rounded-xl p-2">
+                  {movieDetails.rating}
+                </div>
+              </div>
+              <div>
+                <div className="text-sm text-gray-400">Movie</div>
+                <div className="text-lg text-gray-800">
+                  {movieDetails.releaseDate}
+                </div>
+              </div>
+              <p className=" text-gray-400 max-h-40 overflow-y-hidden">
+                {movieDetails.desc}
+              </p>
+              <div>
+                <div className="text-sm text-gray-400">Status</div>
+                <div className="text-lg text-gray-800">
+                  {movieDetails.status}
+                </div>
+              </div>
+              <div className="">
+                <img
+                  className="rounded-3xl shadow-lg w-full"
+                  src={movieDetails.backdropPath}
+                  alt=""
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
-  
-</div>
-    </div>
-  )
-}
+  );
+};
