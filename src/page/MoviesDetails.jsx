@@ -34,7 +34,6 @@ export const MoviesDetails = () => {
       });
     console.log(id);
   }, []);
-  console.log("🚀 ~ MoviesDetails ~ movieDetails:", movieDetails);
 
   return (
     <div>

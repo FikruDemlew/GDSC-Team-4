@@ -1,60 +1,52 @@
-
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, doc } from "firebase/firestore";
 import { db } from "../firebase/firebase"; // Assuming you have a firebase.js file where you initialize Firebase
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import { useAuth } from "../context/authContext";
 import { getAuth } from "firebase/auth";
+import Card from "../component/FavoriteCard";
 
-
-   
 const Favorite = () => {
- const [data, setData] = useState([]);
- useEffect(() =>{
-    fetchData();
- }, 
- [])
- 
- const fetchData = async () => {
-    try {
-        
-        let userResult;
-        const userData = await getDocs(collection(db, "users"))
-        const data = userData.forEach((doc) => {
-            console.log(doc.data());
-            userResult = doc.data();
-        
-        });
-    console.log(data)
-    //    const eventGuestsRef = collection(db, "eventGuests").doc(userResult.phoneNumber).collection("eventsInvitedTo");
-    //    const unsubscribe = onSnapshot(eventGuestsRef, (guestsData) => {
-    //      let guestsResult = [];
-    //      guestsData.forEach((doc) => {
-    //        guestsResult.push(doc.data());
-    //      });
-    //      let eventsResult = [];
-    //      for (let i = 0; i < guestsResult.length; i++) {
-    //        const event = guestsResult[i];
-    //        const eventsInvitedTo = await getDocs(collection(db, "events").where("docId", "==", event.eventId));
-    //        eventsInvitedTo.forEach((doc) => {
-    //          eventsResult.push(doc.data());
-    //        });
-    //      }
-    //      // Assuming you have a state or a way to store the eventsResult
-    //      // For example, this.setState({ eventsData: eventsResult });
-    //    });
-   
-       // Remember to unsubscribe when the component unmounts or when you no longer need the data
-       return () => unsubscribe();
-    } catch (error) {
-       console.error("Error fetching data: ", error);
-    }
-   };
+  const [data, setData] = useState([]);
+  const { userLoggedIn } = useAuth();
 
- return (
+  const fetchData = async () => {
+    if (userLoggedIn) {
+      const userId = getAuth()?.currentUser?.uid;
+      try {
+        const userRef = doc(db, "users", userId);
+        const favoritesRef = collection(userRef, "favorites");
+        const querySnapshot = await getDocs(favoritesRef);
+
+        const favoritesData = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+        setData(favoritesData);
+      } catch (error) {
+        console.error("Error fetching favorites: ", error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, [userLoggedIn]);
+
+  return (
     <div>
-        Favorite
+      <div className="w-[85%] flex flex-col justify-center items-center gap-4">
+        <h2 className="text-2xl m-6 font-bold text-center w-[90%] font-sans ">
+          Your Favorite Movies
+        </h2>
+        <div className="flex flex-row flex-wrap justify-center items-center select-none  gap-x-5 px-5 w-full">
+          {data.map((movieResult) => (
+            <Card key={movieResult.id} movie={movieResult} />
+          ))}
+        </div>
+      </div>
     </div>
- );
+  );
 };
 
 export default Favorite;
