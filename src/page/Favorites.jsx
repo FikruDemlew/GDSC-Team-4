@@ -34,7 +34,7 @@ const Favorite = () => {
   }, [userLoggedIn]);
 
   return (
-    <div>
+    <div className="min-h-[70vh]">
       <div className="w-[85%] flex flex-col justify-center items-center gap-4">
         <h2 className="text-2xl m-6 font-bold text-center w-[90%] font-sans ">
           Your Favorite Movies
