@@ -12,7 +12,7 @@ const Card = ({ movie, favoriteMovies }) => {
   const [isFavorite, setIsFavorite] = useState(false);
   const banner = `https://image.tmdb.org/t/p/w500${movie.backdrop_path}`;
   const image_url = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
-  const title = movie.original_title;
+  const title = movie.title;
   const year = movie.release_date.toString().substring(0, 4);
   const id = movie.id;
   const rating = movie.vote_average.toFixed(1);
