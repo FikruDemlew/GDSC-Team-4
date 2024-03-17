@@ -1,42 +1,14 @@
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { Heart} from "lucide-react";
+import { Heart } from "lucide-react";
 import { useState } from "react";
 import { getAuth } from "firebase/auth";
 import { useAuth } from "../context/authContext";
-import { collection, doc, addDoc } from "firebase/firestore";
+import { collection, doc, addDoc, deleteDoc } from "firebase/firestore";
 import { db } from "../firebase/firebase";
+import { useEffect } from "react";
 
-const addToFavorites = async (userId, movie) => {
-  try {
-    // Reference to the user's document in the users collection
-    const userRef = doc(db, "users", userId);
-
-    // Reference to the favorites subcollection within the user's document
-    const favoritesRef = collection(userRef, "favorites");
-
-    // Add the favorite data to the favorites subcollection
-    const docRef = await addDoc(favoritesRef, movie);
-
-    console.log("Favorite added with ID: ", docRef.id);
-  } catch (error) {
-    console.error("Error adding favorite: ", error);
-  }
-};
-const deleteFavorite = async (userId, movieId) => {
-    const userRef = doc(db, "users", userId);
-    const favoriteRef = doc(userRef, "favorites", movieId);
-   
-    try {
-       await deleteDoc(favoriteRef);
-       console.log("Favorite successfully deleted!");
-    } catch (error) {
-       console.error("Error removing favorite: ", error);
-    }
-   
-}
-
-const Card = ({ movie }) => {
+const Card = ({ movie, favoriteMovies }) => {
   const [isFavorite, setIsFavorite] = useState(false);
   const banner = `https://image.tmdb.org/t/p/w500${movie.backdrop_path}`;
   const image_url = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
@@ -55,10 +27,10 @@ const Card = ({ movie }) => {
     event.stopPropagation();
     if (!userLoggedIn) navigate("/login");
     else {
-      if (isFavorite){
-    
-      }
-      else {
+      if (isFavorite || idExists) {
+        const { favoriteId } = favoriteMovies.find((val) => val.id === id);
+        deleteFavorite(userId, favoriteId);
+      } else {
         addToFavorites(userId, {
           id: id,
           image: image_url,
@@ -67,11 +39,39 @@ const Card = ({ movie }) => {
           rating: rating,
           banner: banner,
         });
+        setIsFavorite((prev) => !prev);
       }
-      setIsFavorite((prev) => !prev);
-      
     }
   };
+
+  const idExists = favoriteMovies.some((favorite) => favorite.id === movie.id);
+
+  const addToFavorites = async (userId, movie) => {
+    try {
+      const userRef = doc(db, "users", userId);
+      const favoritesRef = collection(userRef, "favorites");
+      await addDoc(favoritesRef, movie);
+
+      setIsFavorite(true);
+    } catch (error) {
+      console.error("Error adding favorite: ", error);
+    }
+  };
+
+  const deleteFavorite = async (userId, favoriteId) => {
+    const userRef = doc(db, "users", userId);
+    const favoriteRef = doc(userRef, "favorites", favoriteId);
+
+    try {
+      await deleteDoc(favoriteRef);
+      setIsFavorite((prev) => !prev);
+    } catch (error) {
+      console.error("Error removing favorite: ", error);
+    }
+  };
+  useEffect(() => {
+    if (idExists) setIsFavorite(true);
+  }, [idExists]);
   return (
     <div>
       <div
@@ -85,10 +85,11 @@ const Card = ({ movie }) => {
               className="absolute top-4 right-4 h-10 w-10 rounded-full bg-white flex justify-center items-center cursor-pointer z-50"
               onClick={(event) => handleFavorite(event, id)}
             >
-              <Heart
-                fill={isFavorite ? "red" : "white"}
-                className={isFavorite ? `text-white` : `text-red-500`}
-              />
+              {idExists && isFavorite ? (
+                <Heart fill="red" className="text-white" />
+              ) : (
+                <Heart fill="white" className="text-red-500" />
+              )}
             </div>
           </div>
 
