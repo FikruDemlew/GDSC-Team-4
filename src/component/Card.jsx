@@ -81,9 +81,9 @@ const Card = ({ movie, favoriteMovies }) => {
         className=" p-3 grid grid-flow-row gap-5 gap-y-16 transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 cursor-pointer"
         onClick={() => handleClick(id)}
       >
-        <div className=" w-60 ">
+        <div className=" w-60 "> 
           <div className="relative">
-            <img className="rounded-t-lg" src={image_url} alt="" />
+            <img className="rounded-t-lg w-60 " src={image_url} alt=""  />
             <div
               className="absolute top-4 right-4 h-10 w-10 rounded-full bg-white flex justify-center items-center cursor-pointer z-50"
               onClick={(event) => handleFavorite(event, id)}
@@ -99,7 +99,7 @@ const Card = ({ movie, favoriteMovies }) => {
           <div className="w-60 flex justify-between items-center rounded-b text-black bg-white  py-2">
             <div className="flex flex-col w-full b pl-4 pb-4">
               <Link to={`/movies/${id}`}>
-                <div className=" w-40  text-lg  font-semibold  text-ellipsis">
+                <div className=" w-40  text-lg  font-semibold  truncate">
                   {title}
                 </div>
               </Link>
@@ -108,7 +108,7 @@ const Card = ({ movie, favoriteMovies }) => {
               </div>
             </div>
             <div className=" mr-4 ">
-              <p className="w-10 h-10  border-3 border-white ring-4 ring-orange-500 flex justify-center items-center text-lg p-2 bg-orange-500 rounded-full text-white">
+              <p className="w-10 h-10  border-3 border-white ring-4 ring-orange-500 flex justify-center items-center text-lg p-2 bg-orange-500 rounded-full text-white ">
                 {rating}
               </p>
             </div>

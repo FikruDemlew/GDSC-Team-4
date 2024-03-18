@@ -11,7 +11,13 @@ const Nav = () => {
     <div className="bg-gray-950 text-white">
       {userLoggedIn ? (
         <div className="flex justify-between py-5 ">
-          <div className="px-5 "><Popcorn/></div>
+          <Link to="/">
+            {" "}
+            <div className="px-5 ">
+              <Popcorn />
+            </div>
+          </Link>
+
           <div className="text-white mr-44 gap-7 flex justify-center items-center">
             <Link to="/">Home</Link>
             <Link to="/favorite">Favourite</Link>
@@ -36,12 +42,17 @@ const Nav = () => {
         </div>
       ) : (
         <div className="flex justify-between py-4 ">
-          <div className="px-5 "><Popcorn/></div>
+          <Link to="/" className="">
+             <div className="px-5 ">
+            <Popcorn />
+          </div>
+          </Link>
+         
           <div className="flex justify-center items-center gap-7 mr-10">
             <Link to="/" className="">
               Home
             </Link>
-           
+
             <Link to="/about" className="hover:text-gray-400 mr-7">
               About Us{" "}
             </Link>
