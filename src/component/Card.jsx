@@ -15,7 +15,7 @@ const Card = ({ movie,showDescription }) => {
   return (
     <div >
       {
-        !show && !showDescription &&  <Link to={value}>
+       !showDescription &&  <Link to={value}>
         <div className="p-3 card-container transition-transform duration-300 ease-in-out transform hover:-translate-y-4">
           <div>   
           </div>
